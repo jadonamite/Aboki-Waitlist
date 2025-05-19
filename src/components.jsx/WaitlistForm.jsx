@@ -21,7 +21,7 @@ const WaitlistForm = ({
       <div className="w-full max-w-md bg-gray-800/60 backdrop-blur-lg p-6 rounded-lg shadow-xl animate-fadeIn">
          {!formSubmitted ? (
             <>
-               <h2 className="text-xl font-bold mb-4 text-white">
+               <h2 className="text-xl font-bold mb-4 text-white text-center">
                   Join the waitlist
                </h2>
 

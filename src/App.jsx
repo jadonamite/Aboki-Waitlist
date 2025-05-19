@@ -27,7 +27,7 @@ export default function App() {
 
    // Handle Twitter follow
    const handleTwitterFollow = () => {
-      window.open("https://twitter.com/AbokiExchange", "_blank");
+      window.open("https://twitter.com/abokixyz", "_blank");
       setIsTwitterFollowed(true);
       nextStep();
       showToastNotification("Twitter followed! Now enter your email.");

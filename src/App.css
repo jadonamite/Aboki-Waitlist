@@ -6,7 +6,8 @@
 
 .nebula {
    background-image: url("./nebula-bg.jpg");
+   background-size: cover; /* Add this to make sure the image covers the container */
    background-position: 10% 30%;
    background-repeat: no-repeat;
-   z-index: -1;
+   position: relative; /* Add this to establish a stacking context */
 }

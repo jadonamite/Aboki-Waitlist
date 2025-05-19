@@ -21,9 +21,9 @@ const WaitlistForm = ({
       <div className="w-full max-w-md bg-gray-800/60 backdrop-blur-lg p-6 rounded-lg shadow-xl animate-fadeIn">
          {!formSubmitted ? (
             <>
-               <h2 className="text-xl font-bold mb-4 text-white">
-                  Join the waitlist
-               </h2>
+               <div className="flex w-full justify-center items-center mb-4">
+                  <h2 className="text-xl font-bold mb-4 text-white "></h2>
+               </div>
 
                {currentStep === 1 && (
                   <TwitterFollowStep onTwitterFollow={handleTwitterFollow} />
