@@ -58,7 +58,7 @@ export default function App() {
    return (
       <>
          <div
-            className="w-full nebula h-[200vh]"
+            className="w-full nebula h-[140vh] md:h-[200vh]"
             style={{ backgroundImage: `url(${nebulaBackground})` }}>
             <Navigation handleLaunchApp={handleLaunchApp} />
             <div className="mt-16">
