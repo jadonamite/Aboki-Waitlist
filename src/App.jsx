@@ -92,13 +92,11 @@ export default function App() {
 
    return (
       <>
-
-         <div className="w-full nebula h-[200vh]">
-
-         <div
-            className="w-full nebula h-[200vh]"
-            style={{ backgroundImage: `url(${nebulaBackground})` }}>
-
+         <div 
+            className="w-full nebula h-[200vh]" 
+            style={{ backgroundImage: `url(${nebulaBackground})` }}
+         >
+            <Navigation handleLaunchApp={handleLaunchApp} />
             <div className="mt-16">
                <Hero />
                <ScrollIndicator />
