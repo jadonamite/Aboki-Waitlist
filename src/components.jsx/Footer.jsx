@@ -22,7 +22,7 @@ const Footer = () => {
                      <FaGithub size={20} />
                   </a>
                   <a
-                     href="https://t.me/aboki_ramp_bot"
+                     href="https://t.me/aboxixyz"
                      target="_blank"
                      className="text-gray-600 hover:text-purple-500 transition-all hover:translate-y-[-5px]">
                      <FaTelegram size={20} />
