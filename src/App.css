@@ -1,0 +1,12 @@
+* {
+   box-sizing: border-box;
+   margin: 0;
+   padding: 0;
+}
+
+.nebula {
+   background-image: url("./nebula-bg.jpg");
+   background-position: 10% 30%;
+   background-repeat: no-repeat;
+   z-index: -1;
+}
