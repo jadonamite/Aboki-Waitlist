@@ -25,7 +25,7 @@ export default function App() {
       showToastNotification,
       hideToastNotification,
    } = useToast();
-   
+
    const { currentStep, formSubmitted, nextStep, completeForm } =
       useMultiStepForm(1, 3);
 
@@ -33,26 +33,31 @@ export default function App() {
    // It will submit the registration to API and then route to Twitter
    const handleTwitterFollow = async () => {
       setIsSubmitting(true);
-      
+
       try {
          // Call the API to register the user
-         const response = await fetch('https://waitlist-backend-16v0.onrender.com/api/waitlist/register', {
-            method: 'POST',
-            headers: {
-               'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ 
-               email, 
-               walletAddress 
-            }),
-         });
+         const response = await fetch(
+            "https://waitlist-backend-16v0.onrender.com/api/waitlist/register",
+            {
+               method: "POST",
+               headers: {
+                  "Content-Type": "application/json",
+               },
+               body: JSON.stringify({
+                  email,
+                  walletAddress,
+               }),
+            }
+         );
 
          const data = await response.json();
-         
+
          if (data.success) {
             completeForm();
-            showToastNotification(data.message || "You've been successfully added to the waitlist!");
-            
+            showToastNotification(
+               data.message || "You've been successfully added to the waitlist!"
+            );
+
             // Route to Twitter after successful registration
             window.open("https://twitter.com/abokixyz", "_blank");
             setIsTwitterFollowed(true);
@@ -76,12 +81,16 @@ export default function App() {
       // First step - Email
       if (currentStep === 1 && email) {
          nextStep();
-         showToastNotification("Email submitted! Now enter your wallet address.");
-      } 
+         showToastNotification(
+            "Email submitted! Now enter your wallet address."
+         );
+      }
       // Second step - Wallet address
       else if (currentStep === 2 && isValidEthAddress(walletAddress)) {
          nextStep();
-         showToastNotification("Wallet address submitted! Follow us on Twitter to complete registration.");
+         showToastNotification(
+            "Wallet address submitted! Follow us on Twitter to complete registration."
+         );
       }
    };
 
@@ -92,10 +101,9 @@ export default function App() {
 
    return (
       <>
-         <div 
-            className="w-full nebula h-[200vh]" 
-            style={{ backgroundImage: `url(${nebulaBackground})` }}
-         >
+         <div
+            className="w-full nebula h-[140vh] md:h-[200vh]"
+            style={{ backgroundImage: `url(${nebulaBackground})` }}>
             <Navigation handleLaunchApp={handleLaunchApp} />
             <div className="mt-16">
                <Hero />
@@ -118,7 +126,7 @@ export default function App() {
             </div>
          </div>
          <Footer />
-         
+
          {/* Toast notification */}
          {showToast && (
             <div className="fixed bottom-4 right-4 bg-black text-white p-4 rounded-md shadow-lg">
