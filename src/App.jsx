@@ -16,6 +16,7 @@ export default function App() {
    const [email, setEmail] = useState("");
    const [walletAddress, setWalletAddress] = useState("");
    const [isTwitterFollowed, setIsTwitterFollowed] = useState(false);
+   const [isSubmitting, setIsSubmitting] = useState(false);
 
    const {
       showToast,
@@ -23,29 +24,63 @@ export default function App() {
       showToastNotification,
       hideToastNotification,
    } = useToast();
+   
    const { currentStep, formSubmitted, nextStep, completeForm } =
       useMultiStepForm(1, 3);
 
-   // Handle Twitter follow
-   const handleTwitterFollow = () => {
-      window.open("https://twitter.com/abokixyz", "_blank");
-      setIsTwitterFollowed(true);
-      nextStep();
-      showToastNotification("Twitter followed! Now enter your email.");
+   // Handle Twitter follow - this is now the third step
+   // It will submit the registration to API and then route to Twitter
+   const handleTwitterFollow = async () => {
+      setIsSubmitting(true);
+      
+      try {
+         // Call the API to register the user
+         const response = await fetch('https://waitlist-backend-16v0.onrender.com/api/waitlist/register', {
+            method: 'POST',
+            headers: {
+               'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ 
+               email, 
+               walletAddress 
+            }),
+         });
+
+         const data = await response.json();
+         
+         if (data.success) {
+            completeForm();
+            showToastNotification(data.message || "You've been successfully added to the waitlist!");
+            
+            // Route to Twitter after successful registration
+            window.open("https://twitter.com/abokixyz", "_blank");
+            setIsTwitterFollowed(true);
+         } else {
+            throw new Error(data.message || "Registration failed");
+         }
+      } catch (error) {
+         console.error("Waitlist registration error:", error);
+         showToastNotification(
+            error.message || "Something went wrong. Please try again."
+         );
+      } finally {
+         setIsSubmitting(false);
+      }
    };
 
-   // Handle form submission
-   const handleSubmit = (e) => {
+   // Handle form submission for email and wallet steps
+   const handleSubmit = async (e) => {
       e.preventDefault();
 
-      if (currentStep === 2 && email) {
+      // First step - Email
+      if (currentStep === 1 && email) {
          nextStep();
-         showToastNotification(
-            "Email submitted! Now enter your wallet address."
-         );
-      } else if (currentStep === 3 && isValidEthAddress(walletAddress)) {
-         completeForm();
-         showToastNotification("You've been added to the waitlist!");
+         showToastNotification("Email submitted! Now enter your wallet address.");
+      } 
+      // Second step - Wallet address
+      else if (currentStep === 2 && isValidEthAddress(walletAddress)) {
+         nextStep();
+         showToastNotification("Wallet address submitted! Follow us on Twitter to complete registration.");
       }
    };
 
@@ -56,7 +91,7 @@ export default function App() {
 
    return (
       <>
-         <div className="w-full  nebula h-[200vh]">
+         <div className="w-full nebula h-[200vh]">
             <Navigation handleLaunchApp={handleLaunchApp} />
             <div className="mt-16">
                <Hero />
@@ -74,10 +109,18 @@ export default function App() {
                   handleTwitterFollow={handleTwitterFollow}
                   handleSubmit={handleSubmit}
                   formSubmitted={formSubmitted}
+                  isSubmitting={isSubmitting}
                />
             </div>
          </div>
          <Footer />
+         
+         {/* Toast notification */}
+         {showToast && (
+            <div className="fixed bottom-4 right-4 bg-black text-white p-4 rounded-md shadow-lg">
+               {toastMessage}
+            </div>
+         )}
       </>
    );
 }
