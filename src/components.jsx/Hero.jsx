@@ -90,7 +90,7 @@ const Hero = () => {
   };
 
   // Purple color variables
-  const purpleText = "#8A2BE2"; // A rich purple color
+  const purpleText = "#ffffff"; // A rich purple color
   const lightPurple = "#B19CD9"; // A lighter purple
 
   return (
@@ -114,14 +114,13 @@ const Hero = () => {
         )}
       </div>
       
-      {/* Stats Overlay */}
+      {/* Stats Overlay - with glassmorphic background */}
       <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center w-[85%] md:w-[70%] z-10">
-        <div className="bg-black bg-opacity-50 backdrop-blur-lg p-6 md:p-8 rounded-2xl border border-purple-500 border-opacity-30 shadow-glow">
+        <div className="glassmorphic p-6 md:p-8 rounded-2xl animated-border">
           <p 
-            className="text-white text-base md:text-xl lg:text-2xl uppercase tracking-wider mb-4 font-semibold animate-pulse"
-            style={{ color: "white" }}
+            className="text-white text-base md:text-xl lg:text-2xl uppercase tracking-wider mb-4 font-semibold"
           >
-            Total Users
+            Total Beta Testers
           </p>
           
           <div className="flex justify-center items-center mb-4">
@@ -129,7 +128,7 @@ const Hero = () => {
               {formatCount(displayCount).map((digit, index) => (
                 <div 
                   key={index}
-                  className="w-12 h-16 md:w-16 md:h-20 lg:w-20 lg:h-24 bg-white bg-opacity-90 mx-1 my-1 rounded-lg flex items-center justify-center text-gray-800 font-bold text-2xl md:text-3xl lg:text-4xl shadow-xl"
+                  className="digit-glassmorphic w-12 h-16 md:w-16 md:h-20 lg:w-20 lg:h-24 mx-1 my-1 rounded-lg flex items-center justify-center font-bold text-2xl md:text-3xl lg:text-4xl"
                   style={{
                     animation: waitlistStats.isLoading 
                       ? `pulse 1.5s infinite ${index * 0.1}s` 
@@ -146,7 +145,7 @@ const Hero = () => {
         </div>
       </div>
       
-      {/* CSS for animations */}
+      {/* CSS for animations and glassmorphism */}
       <style jsx>{`
         @keyframes flipIn {
           0% {
@@ -176,9 +175,47 @@ const Hero = () => {
           }
         }
         
-        .shadow-glow {
-          box-shadow: 0 0 20px rgba(138, 43, 226, 0.3), 
-                      0 0 40px rgba(0, 0, 0, 0.1);
+        /* Glassmorphic container */
+        .glassmorphic {
+          background: rgba(23, 12, 61, 0.4);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+          backdrop-filter: blur(10px);
+          -webkit-backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        /* Glassmorphic digits */
+        .digit-glassmorphic {
+          background: rgba(255, 255, 255, 0.25);
+          box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.2);
+          backdrop-filter: blur(4px);
+          -webkit-backdrop-filter: blur(4px);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .animated-border {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .animated-border::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 2px;
+          background: linear-gradient(90deg, transparent, ${purpleText}, transparent);
+          animation: animate 3s linear infinite;
+        }
+        
+        @keyframes animate {
+          0% {
+            left: -100%;
+          }
+          50%, 100% {
+            left: 100%;
+          }
         }
       `}</style>
     </div>
