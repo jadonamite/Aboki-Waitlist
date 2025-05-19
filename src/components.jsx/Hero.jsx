@@ -12,21 +12,40 @@ const Hero = () => {
   const [displayCount, setDisplayCount] = useState(0);
   
   useEffect(() => {
-    // Show animation with preset numbers during loading
+    // Clear any existing timers to prevent memory leaks
     let loadingTimer;
+    let fetchTimer;
+    
+    // Show animation with incrementing numbers during loading
     if (waitlistStats.isLoading) {
       let count = 0;
       loadingTimer = setInterval(() => {
-        // Use 0002 as preset number while loading
-        setDisplayCount(2);
+        count = (count + 1) % 10;
+        setDisplayCount(count);
       }, 300);
     }
     
-    // Fetch waitlist stats
+    // Fetch waitlist stats with proper error handling
     const fetchStats = async () => {
       try {
-        const response = await fetch('https://waitlist-backend-16v0.onrender.com/api/waitlist/stats');
+        console.log("Fetching waitlist stats...");
+        const response = await fetch('https://waitlist-backend-16v0.onrender.com/api/waitlist/stats', {
+          // Add cache control to prevent using cached results
+          cache: 'no-store',
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
+        
+        // Check if the response is ok
+        if (!response.ok) {
+          throw new Error(`Server responded with status: ${response.status}`);
+        }
+        
         const data = await response.json();
+        console.log("Received data:", data);
         
         // Clear the loading animation
         clearInterval(loadingTimer);
@@ -38,15 +57,16 @@ const Hero = () => {
             error: null
           });
         } else {
-          throw new Error("Failed to fetch stats");
+          throw new Error("Failed to fetch stats: " + (data.message || "Unknown error"));
         }
       } catch (error) {
         console.error("Error fetching waitlist stats:", error);
         // Clear the loading animation
         clearInterval(loadingTimer);
         
+        // Only use default value if actually needed
         setWaitlistStats({
-          totalRegistrations: 2, // Default to 2 if there's an error
+          totalRegistrations: 0, // Default to 0 to make it obvious there's an error
           isLoading: false,
           error: error.message
         });
@@ -54,21 +74,24 @@ const Hero = () => {
     };
     
     // Wait a bit before fetching to show the loading animation
-    setTimeout(() => {
+    fetchTimer = setTimeout(() => {
       fetchStats();
-    }, 1500);
+    }, 1000); // Reduced from 1500ms
     
-    return () => clearInterval(loadingTimer);
-  }, []);
+    return () => {
+      clearInterval(loadingTimer);
+      clearTimeout(fetchTimer);
+    };
+  }, []); // Empty dependency array to run only once on mount
   
-  // Animate the counter
+  // Animate the counter when stats are loaded
   useEffect(() => {
-    if (!waitlistStats.isLoading) {
+    if (!waitlistStats.isLoading && waitlistStats.totalRegistrations > 0) {
       const total = waitlistStats.totalRegistrations;
       let start = 0;
-      const duration = 2500; // 2.5 seconds
+      const duration = 2000; // 2 seconds (slightly faster)
       const step = 16; // ~60fps
-      const increment = Math.ceil(total / (duration / step));
+      const increment = Math.max(1, Math.ceil(total / (duration / step))); // At least 1
       
       const timer = setInterval(() => {
         start += increment;
@@ -89,8 +112,20 @@ const Hero = () => {
     return count.toString().padStart(4, '0').split('');
   };
 
+  // Show an error message when there's an error
+  const renderErrorMessage = () => {
+    if (waitlistStats.error) {
+      return (
+        <div className="text-red-400 text-xs md:text-sm mt-2">
+          Failed to update counter: Please refresh the page
+        </div>
+      );
+    }
+    return null;
+  };
+
   // Purple color variables
-  const purpleText = "#ffffff"; // A rich purple color
+  const purpleText = "#ffffff"; // White text
   const lightPurple = "#B19CD9"; // A lighter purple
 
   return (
@@ -142,6 +177,16 @@ const Hero = () => {
               ))}
             </div>
           </div>
+          
+          {/* Error message */}
+          {renderErrorMessage()}
+          
+          {/* Loading indicator */}
+          {waitlistStats.isLoading && (
+            <div className="text-white text-xs md:text-sm mt-2">
+              Loading stats...
+            </div>
+          )}
         </div>
       </div>
       
