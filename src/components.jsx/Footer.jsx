@@ -1,5 +1,6 @@
 import React from "react";
-import { FaTwitter, FaGithub, FaTelegram, FaDiscord } from "react-icons/fa";
+import { FaGithub, FaTelegram, FaDiscord } from "react-icons/fa";
+import { BsTwitterX } from "react-icons/bs";
 
 const Footer = () => {
    return (
@@ -9,23 +10,26 @@ const Footer = () => {
                {/* Social Links */}
                <div className="flex gap-4">
                   <a
-                     href="#"
-                     className="text-gray-600 hover:text-purple-500 transition-colors">
-                     <FaTwitter size={20} />
+                     href="https://https://x.com/abokixyz"
+                     target="_blank"
+                     className="text-gray-600 hover:text-purple-500 transition-all hover:translate-y-[-5px]">
+                     <BsTwitterX size={18} />
                   </a>
                   <a
-                     href="#"
-                     className="text-gray-600 hover:text-purple-500 transition-colors">
+                     href="https://github.com/Aboki-finance"
+                     target="_blank"
+                     className="text-gray-600 hover:text-purple-500 transition-all hover:translate-y-[-5px]">
                      <FaGithub size={20} />
                   </a>
                   <a
-                     href="#"
-                     className="text-gray-600 hover:text-purple-500 transition-colors">
+                     href="https://t.me/aboki_ramp_bot"
+                     target="_blank"
+                     className="text-gray-600 hover:text-purple-500 transition-all hover:translate-y-[-5px]">
                      <FaTelegram size={20} />
                   </a>
                   <a
                      href="#"
-                     className="text-gray-600 hover:text-purple-500 transition-colors">
+                     className="text-gray-600 hover:text-purple-500 transition-all hover:translate-y-[-5px]">
                      <FaDiscord size={20} />
                   </a>
                </div>

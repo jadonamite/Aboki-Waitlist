@@ -4,6 +4,7 @@ import "./App.css"; // Import your CSS file here
 import Navigation from "./components.jsx/Navigation";
 import Footer from "./components.jsx/Footer";
 import Hero from "./components.jsx/Hero";
+import ScrollIndicator from "./components.jsx/ScrollIndicator";
 import WaitlistForm from "./components.jsx/WaitlistForm";
 import CountdownHero from "./components.jsx/Countdown";
 import useToast from "./hooks/useToast";
@@ -59,6 +60,7 @@ export default function App() {
             <Navigation handleLaunchApp={handleLaunchApp} />
             <div className="mt-16">
                <Hero />
+               <ScrollIndicator />
             </div>
             <CountdownHero />
             <div className="flex justify-center items-center h-[40vh]">
