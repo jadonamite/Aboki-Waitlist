@@ -10,6 +10,7 @@ import CountdownHero from "./components.jsx/Countdown";
 import useToast from "./hooks/useToast";
 import useMultiStepForm from "./hooks/useMultiStepForm";
 import { isValidEthAddress } from "./utils/validation";
+import nebulaBackground from "/nebula-bg.jpg";
 
 export default function App() {
    // Form state
@@ -91,8 +92,13 @@ export default function App() {
 
    return (
       <>
+
          <div className="w-full nebula h-[200vh]">
-            <Navigation handleLaunchApp={handleLaunchApp} />
+
+         <div
+            className="w-full nebula h-[200vh]"
+            style={{ backgroundImage: `url(${nebulaBackground})` }}>
+
             <div className="mt-16">
                <Hero />
                <ScrollIndicator />
